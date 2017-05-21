@@ -2,8 +2,6 @@ package controllers
 
 import javax.inject._
 
-import dao.UsersDAO
-import models.User
 import play.api.mvc._
 
 /**
@@ -11,9 +9,7 @@ import play.api.mvc._
  * application's home page.
  */
 @Singleton
-class HomeController @Inject() (
-                                 usersDao: UsersDAO
-                               ) extends Controller {
+class HomeController extends Controller {
 
   /**
    * Create an Action to render an HTML page.
@@ -22,11 +18,7 @@ class HomeController @Inject() (
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index = Action.async { implicit request =>
-    import scala.concurrent.ExecutionContext.Implicits.global
-
-    val user = User("a", "b", "c", "d")
-    val result = usersDao.insert(user)
-    result.map(id => Ok(views.html.index("Inserted user with id: " + id)))
+  def index = Action { implicit request =>
+    Ok(views.html.index())
   }
 }

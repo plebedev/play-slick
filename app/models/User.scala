@@ -5,6 +5,8 @@ import java.util.Date
 
 import db.Entity
 import org.mindrot.jbcrypt.BCrypt
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
 case class User (override val id: Option[Long],
                 firstName: String,
@@ -37,6 +39,13 @@ object User extends ((Option[Long], String, String, String, String, Option[Times
 
     new User(None, firstName, lastName, emailAddress, hashPassword(password), None, None)
   }
+
+  implicit val userReads: Reads[User] = (
+    (JsPath \ "firstName").read[String] and
+      (JsPath \ "lastName").read[String] and
+      (JsPath \ "emailAddress").read[String] and
+      (JsPath \ "password").read[String]
+    )(User.apply(_,_,_,_))
 
   /**
     * Returns true if the given password matches the given hash, false otherwise.
