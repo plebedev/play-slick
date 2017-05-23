@@ -25,7 +25,7 @@ class UserController @Inject() (
     request.body.validate[User].map{
       case (user) => {
         val result = usersDao.insert(User(user.firstName, user.lastName, user.emailAddress, user.password))
-        result.map(id => Ok(Json.obj("status" ->"OK", "message" -> ("User Id: "+ id))))
+        result.map(user => Ok(Json.toJson(user)))
       }
     }.recoverTotal{
       e => Future(BadRequest("Detected error:"+ JsError.toJson(e)))

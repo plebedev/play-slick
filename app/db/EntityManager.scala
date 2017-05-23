@@ -22,7 +22,9 @@ abstract class EntityManager[T <: TableDefinition[E], E <: Entity[E]]
     * @param entity an entity to be inserted
     * @return a future whose value is the ID of the inserted record
     */
-  def insert(entity: E): Future[Long] = {
-    db.run((tableQuery returning tableQuery.map(_.id)) += entity.prePersist).map(res => res.get)
+  def insert(entity: E): Future[E] = {
+    val prepersistEntity: E = entity.prePersist
+    db.run((tableQuery returning tableQuery.map(_.id)) += prepersistEntity)
+      .map(res => prepersistEntity.postPersist(res.get))
   }
 }

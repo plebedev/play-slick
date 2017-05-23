@@ -19,6 +19,11 @@ trait Entity[T <: Entity[T]] {
   def prePersist: T
 
   /**
+    * Executed after this entity is persisted with the entity's ID.
+   */
+  def postPersist(id: Long): T
+
+  /**
     * Executed before the database UPDATE operation for this entity.
     */
   def preUpdate: T

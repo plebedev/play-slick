@@ -25,6 +25,10 @@ case class User (override val id: Option[Long],
     this.copy(createdAt = ts, updatedAt = ts)
   }
 
+  def postPersist(id: Long): User = {
+    this.copy(id = Option(id))
+  }
+
   /**
     * @inheritdoc
     */
@@ -40,12 +44,26 @@ object User extends ((Option[Long], String, String, String, String, Option[Times
     new User(None, firstName, lastName, emailAddress, hashPassword(password), None, None)
   }
 
+  def unapply1(user: User): Option[(Option[Long], String, String, String, Option[Timestamp], Option[Timestamp])] =
+    Some((user.id, user.firstName, user.lastName, user.emailAddress, user.createdAt, user.updatedAt))
+
   implicit val userReads: Reads[User] = (
     (JsPath \ "firstName").read[String] and
       (JsPath \ "lastName").read[String] and
       (JsPath \ "emailAddress").read[String] and
       (JsPath \ "password").read[String]
     )(User.apply(_,_,_,_))
+
+  /*implicit val userWrites: Writes[User] = Json.writes[User]*/
+
+  implicit val userWrites: Writes[User] = (
+    (JsPath \ "id").writeNullable[Long] and
+      (JsPath \ "lastName").write[String] and
+      (JsPath \ "firstName").write[String] and
+      (JsPath \ "emailAddress").write[String] and
+      (JsPath \ "createdAt").writeNullable[Timestamp] and
+      (JsPath \ "updatedAt").writeNullable[Timestamp]
+  )(unlift(User.unapply1))
 
   /**
     * Returns true if the given password matches the given hash, false otherwise.

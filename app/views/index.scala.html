@@ -2,5 +2,7 @@
 
 @main("Welcome to Play") {
 <p>Scala/Play/Slick example for CRUD operations. Use <code>curl</code> to <code>POST/GET/PUT/DELETE</code>:</p>
-<pre><code>Examples: TBD</code></pre>
+<p><h2>Examples</h2></p>
+<p><h3>Create a user</h3></p>
+<pre><code>curl -H "Content-Type: application/json" -X POST -d '{"firstName":"Scala","lastName":"Player","emailAddress":"test@@example.com","password":"xyz"}' http://localhost:9000/user</code></pre>
 }
