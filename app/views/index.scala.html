@@ -4,5 +4,11 @@
 <p>Scala/Play/Slick example for CRUD operations. Use <code>curl</code> to <code>POST/GET/PUT/DELETE</code>:</p>
 <p><h2>Examples</h2></p>
 <p><h3>Create a user</h3></p>
-<pre><code>curl -H "Content-Type: application/json" -X POST -d '{"firstName":"Scala","lastName":"Player","emailAddress":"test@@example.com","password":"xyz"}' http://localhost:9000/user</code></pre>
+<pre><code>curl -H "Content-Type: application/json" -X POST
+    -d '{"firstName":"Scala","lastName":"Player","emailAddress":"test@@example.com","password":"xyz"}'
+    http://localhost:9000/user</code></pre>
+<p><h3>Update a user</h3></p>
+<pre><code>curl -H "Content-Type: application/json" -X PUT
+    -d '{"firstName":"UpdatedScala","lastName":"Player","emailAddress":"test+update@@example.com","password":"newpass"}'
+    http://localhost:9000/user/1</code></pre>
 }
